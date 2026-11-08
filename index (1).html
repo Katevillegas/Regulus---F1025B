@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Regulus Lab · Reto F1025B</title>
+<meta name="description" content="Equipos Regulus S.A. de C.V. · Landing del cohete para el reto F1025B del Tec de Monterrey.">
+<meta name="theme-color" content="#0B1C33">
+<link rel="icon" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Semi+Condensed:wght@500;700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--azul:#0B1C33;--dorado:#DAA520;--cient:#7E94A3;--noche:#06101F;--texto:#EEF2F6;--titulo:'Saira Semi Condensed','Arial Narrow',sans-serif;--cuerpo:'Inter',system-ui,sans-serif}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{background:var(--noche);color:var(--texto);font:400 1.05rem/1.65 var(--cuerpo);overflow-x:hidden}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--dorado);outline-offset:3px}
+#stars{position:fixed;inset:0;z-index:0;pointer-events:none}
+main,header,footer{position:relative;z-index:1}
+nav{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:.7rem 1.4rem;background:linear-gradient(var(--noche),transparent)}
+nav .marca{display:flex;align-items:center;gap:.6rem;text-decoration:none;font:800 1.15rem var(--titulo);letter-spacing:.04em}
+nav .marca img{height:38px}
+nav .marca small{display:block;font:500 .6rem var(--cuerpo);letter-spacing:.35em;color:var(--cient)}
+nav ul{display:flex;gap:1.4rem;list-style:none;padding:0}
+nav ul a{text-decoration:none;color:var(--cient);font-size:.9rem}
+nav ul a:hover{color:var(--dorado)}
+@media(max-width:700px){nav ul{display:none}}
+/* HERO */
+.hero{min-height:100vh;position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;padding:6.5rem 1.2rem 0;overflow:hidden}
+.frase{font:800 clamp(1.7rem,5vw,3.4rem)/1.1 var(--titulo);max-width:15em;color:var(--dorado);text-shadow:0 0 28px rgba(218,165,32,.45)}
+.frase span{display:block;font:500 .85rem var(--cuerpo);color:var(--cient);margin-top:.9rem;letter-spacing:.04em;text-shadow:none}
+.planeta{position:absolute;left:50%;bottom:-62vw;width:max(130vw,1200px);aspect-ratio:1;transform:translateX(-50%);border-radius:50%;overflow:hidden;z-index:0;
+ box-shadow:0 0 0 2px rgba(218,165,32,.35),0 0 90px 20px rgba(126,148,163,.4),0 0 220px 60px rgba(218,165,32,.18)}
+.planeta .tex{position:absolute;inset:-20%;background:
+ radial-gradient(circle at 30% 25%,#1d4a7a,transparent 38%),radial-gradient(circle at 70% 40%,#7E94A3 0,transparent 30%),
+ radial-gradient(circle at 45% 65%,#DAA520 0,transparent 24%),radial-gradient(circle at 20% 70%,#16345c,transparent 40%),
+ radial-gradient(circle at 80% 80%,#0f2a4d,transparent 45%),#0B1C33;filter:url(#marmol);animation:gira 70s linear infinite}
+.planeta::after{content:"";position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 50% 0,transparent 55%,rgba(6,16,31,.85) 100%)}
+@keyframes gira{to{transform:rotate(360deg)}}
+.centro{position:relative;z-index:2;margin-top:2.2rem;display:flex;flex-direction:column;align-items:center;gap:1rem}
+.logo-hero{width:min(240px,52vw);filter:drop-shadow(0 0 26px rgba(218,165,32,.55));animation:flota 6s ease-in-out infinite}
+@keyframes flota{50%{transform:translateY(-12px)}}
+.leyenda{font:700 clamp(1.3rem,3.4vw,2rem) var(--titulo);letter-spacing:.06em}
+.leyenda i{font-style:normal;animation:parp 1.6s steps(2) infinite}
+@keyframes parp{50%{opacity:.25}}
+.reloj{display:flex;align-items:center;gap:1.4rem;flex-wrap:wrap;justify-content:center;background:rgba(11,28,51,.72);backdrop-filter:blur(6px);border:1px solid rgba(126,148,163,.35);border-radius:22px;padding:.9rem 1.4rem}
+.anillo{position:relative;width:96px;height:96px;flex:none}
+.anillo svg{width:100%;height:100%;transform:rotate(-90deg)}
+.anillo circle{fill:none;stroke-width:6}
+.anillo .b{stroke:rgba(126,148,163,.25)}
+.anillo .p{stroke:var(--dorado);stroke-linecap:round;transition:stroke-dashoffset 1s linear}
+.anillo b{position:absolute;inset:0;display:grid;place-items:center;font:700 .95rem var(--titulo)}
+.cuenta{display:flex;gap:1.1rem}
+.cuenta div{min-width:3.6rem}
+.cuenta strong{display:block;font:800 clamp(1.8rem,5vw,2.8rem)/1 var(--titulo);color:var(--dorado)}
+.cuenta span{font-size:.75rem;color:var(--cient)}
+.ventana{font-size:.85rem;color:var(--cient)}
+.btn{display:inline-block;margin-top:.2rem;padding:.8rem 2rem;border-radius:999px;background:var(--dorado);color:var(--azul);font:800 1rem var(--titulo);letter-spacing:.05em;text-decoration:none;box-shadow:0 0 30px rgba(218,165,32,.4);transition:transform .2s,box-shadow .2s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 0 44px rgba(218,165,32,.65)}
+.hero-pad{height:22vh}
+/* SECCIONES */
+section{padding:6rem 1.4rem;max-width:1000px;margin:0 auto}
+section.sobre{background:linear-gradient(var(--noche),rgba(11,28,51,.9) 12%,rgba(11,28,51,.9));max-width:none;padding-left:0;padding-right:0}
+.in{max-width:1000px;margin:0 auto;padding:0 1.4rem}
+h2{font:800 clamp(2rem,5vw,3.2rem)/1.05 var(--titulo);margin-bottom:1.2rem}
+h2+p,.in>p{max-width:60ch;color:#C9D3DC}
+.dos{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1rem;margin-top:2rem}
+.card{border:1px solid rgba(126,148,163,.3);border-radius:18px;padding:1.3rem;background:rgba(6,16,31,.55)}
+.card h3{font:700 1.25rem var(--titulo);color:var(--dorado);margin-bottom:.3rem}
+.card p{font-size:.95rem;color:var(--cient)}
+.cohete{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:center;margin-top:2rem}
+@media(max-width:700px){.cohete{grid-template-columns:1fr}}
+.datos{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+.datos div{border-left:2px solid var(--dorado);padding:.2rem .9rem}
+.datos small{display:block;color:var(--cient);font-size:.8rem}
+.datos b{font:700 1.2rem var(--titulo)}
+.cohete svg{width:100%;max-height:340px;filter:drop-shadow(0 0 18px rgba(126,148,163,.35))}
+.tabla{overflow-x:auto;margin-top:1.6rem}
+table{width:100%;border-collapse:collapse;min-width:520px}
+th,td{padding:.8rem 1rem;text-align:left;border-bottom:1px solid rgba(126,148,163,.25)}
+th{font:700 .95rem var(--titulo);color:var(--dorado)}
+td:last-child,td:nth-child(3){color:var(--cient)}
+.pend{display:inline-block;margin-top:1rem;padding:.3rem .9rem;border:1px solid var(--dorado);border-radius:999px;color:var(--dorado);font-size:.85rem}
+.linea{list-style:none;padding:0;margin-top:2rem;border-left:2px solid rgba(126,148,163,.35)}
+.linea li{position:relative;padding:0 0 1.5rem 1.6rem}
+.linea li::before{content:"";position:absolute;left:-7px;top:.45rem;width:12px;height:12px;border-radius:50%;background:var(--noche);border:2px solid var(--cient)}
+.linea li[data-estado="curso"]::before{border-color:var(--dorado);background:var(--dorado);box-shadow:0 0 12px var(--dorado)}
+.linea li[data-estado="lista"]::before{background:var(--cient)}
+.linea b{font:700 1.15rem var(--titulo)}
+.linea small{display:block;color:var(--cient)}
+.equipo{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1rem;margin-top:2rem}
+.pers{text-align:center;border:1px solid rgba(126,148,163,.3);border-radius:18px;padding:1.6rem 1rem;background:rgba(6,16,31,.55)}
+.ini{width:64px;height:64px;margin:0 auto .9rem;border-radius:50%;display:grid;place-items:center;font:800 1.3rem var(--titulo);color:var(--azul);background:var(--dorado);box-shadow:0 0 22px rgba(218,165,32,.45)}
+.pers h3{font:700 1.1rem/1.2 var(--titulo)}
+footer{text-align:center;padding:4rem 1.4rem 5rem;background:var(--azul);border-top:1px solid rgba(218,165,32,.35)}
+footer img{width:96px;margin-bottom:.8rem}
+footer p{color:var(--cient);font-size:.9rem}
+footer a{color:var(--dorado)}
+/* MUSICA */
+#musica{position:fixed;right:1rem;bottom:1rem;z-index:30;display:flex;align-items:center;gap:.6rem;padding:.6rem 1rem;border-radius:999px;border:1px solid var(--dorado);background:rgba(11,28,51,.9);color:var(--texto);font:700 .9rem var(--titulo);cursor:pointer}
+#musica:hover{background:var(--dorado);color:var(--azul)}
+#vol{width:80px;accent-color:var(--dorado);display:none}
+#musica.on+#vol,#volbox.on #vol{display:block}
+#volbox{position:fixed;right:1rem;bottom:4rem;z-index:30;display:none}
+#volbox.on{display:block}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="marmol"><feTurbulence type="fractalNoise" baseFrequency=".006 .01" numOctaves="3" seed="7" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="260"/></filter></svg>
+<canvas id="stars" aria-hidden="true"></canvas>
+
+<nav>
+  <a class="marca" href="#inicio"><img src="logo.png" alt="Logo de Regulus"><span>REGULUS<small>LAB</small></span></a>
+  <ul><li><a href="#mision">Misión</a></li><li><a href="#cohete">Cohete</a></li><li><a href="#resultados">Resultados</a></li><li><a href="#bitacora">Bitácora</a></li><li><a href="#equipo">Equipo</a></li></ul>
+</nav>
+
+<header class="hero" id="inicio">
+  <h1 class="frase">Todo gran vuelo empieza con alguien que se atreve a despegar<span>Equipos Regulus S.A. de C.V. · Reto F1025B</span></h1>
+  <div class="planeta" aria-hidden="true"><div class="tex"></div></div>
+  <div class="centro">
+    <img class="logo-hero" src="logo.png" alt="Logo de Regulus: conejillo de indias astronauta junto a un cohete">
+    <p class="leyenda">Lanzamiento por venir<i>...</i></p>
+    <div class="reloj" role="timer" aria-label="Cuenta regresiva al lanzamiento">
+      <div class="anillo"><svg viewBox="0 0 100 100"><circle class="b" cx="50" cy="50" r="44"/><circle class="p" id="arco" cx="50" cy="50" r="44" stroke-dasharray="276.46" stroke-dashoffset="276.46"/></svg><b id="pct">0%</b></div>
+      <div class="cuenta"><div><strong id="d">--</strong><span>días</span></div><div><strong id="h">--</strong><span>horas</span></div><div><strong id="m">--</strong><span>min</span></div><div><strong id="s">--</strong><span>seg</span></div></div>
+    </div>
+    <p class="ventana">Ventana de lanzamiento: 23 al 27 de noviembre de 2026</p>
+    <a class="btn" href="#mision">Iniciar misión</a>
+  </div>
+  <div class="hero-pad"></div>
+</header>
+
+<main>
+<section class="sobre" id="mision"><div class="in">
+  <h2>Predecir, no presumir.</h2>
+  <p>El reto F1025B del Tec de Monterrey consiste en diseñar, construir y lanzar con éxito el cohete de nuestra empresa, usando la física y el modelado matemático para entender su vuelo.</p>
+  <div class="dos">
+    <div class="card"><h3>Lanzamiento exitoso</h3><p>El cohete despega, vuela de forma estable y completa su trayectoria.</p></div>
+    <div class="card"><h3>Recuperación segura</h3><p>El cohete regresa en buen estado para validar los resultados.</p></div>
+  </div>
+</div></section>
+
+<section id="cohete">
+  <h2>El cohete</h2>
+  <p>Ficha técnica breve. Los valores se publicarán cuando estén confirmados.</p>
+  <div class="cohete">
+    <div class="datos">
+      <div><small>Largo</small><b>Por confirmar</b></div>
+      <div><small>Diámetro</small><b>Por confirmar</b></div>
+      <div><small>Masa</small><b>Por confirmar</b></div>
+      <div><small>Motor</small><b>Por confirmar</b></div>
+    </div>
+    <svg viewBox="0 0 200 340" role="img" aria-label="Esquema lineal del cohete" fill="none" stroke="#7E94A3" stroke-width="2" stroke-linejoin="round">
+      <path d="M100 10C80 50 72 90 72 130v130h56V130c0-40-8-80-28-120z" stroke="#EEF2F6"/>
+      <path d="M72 130h56M72 255h56" stroke="#DAA520"/>
+      <circle cx="100" cy="165" r="15" stroke="#DAA520"/>
+      <path d="M72 205l-34 58v36l34-26zM128 205l34 58v36l-34-26z" stroke="#DAA520"/>
+      <path d="M86 260v30h28v-30M92 292c-4 14 0 28 8 38 8-10 12-24 8-38" stroke="#7E94A3" stroke-dasharray="4 4"/>
+    </svg>
+  </div>
+</section>
+
+<section class="sobre" id="resultados"><div class="in">
+  <h2>Predicción vs. real</h2>
+  <p>Aquí compararemos lo que predice nuestro modelo con lo que ocurra en el lanzamiento.</p>
+  <div class="tabla"><table>
+    <!-- Para registrar un intento, cambia "Pendiente" por el valor real o agrega otra fila <tr> -->
+    <thead><tr><th>Variable</th><th>Predicción</th><th>Real</th><th>Error</th></tr></thead>
+    <tbody>
+      <tr><td>Apogeo</td><td>Por confirmar</td><td>Pendiente</td><td>—</td></tr>
+      <tr><td>Tiempo al apogeo</td><td>Por confirmar</td><td>Pendiente</td><td>—</td></tr>
+      <tr><td>Tiempo total de vuelo</td><td>Por confirmar</td><td>Pendiente</td><td>—</td></tr>
+      <tr><td>Velocidad de descenso</td><td>Por confirmar</td><td>Pendiente</td><td>—</td></tr>
+      <tr><td>Estado del cohete</td><td>Intacto</td><td>Pendiente</td><td>—</td></tr>
+    </tbody></table></div>
+  <span class="pend">Pendiente de lanzamiento</span>
+</div></section>
+
+<section id="bitacora">
+  <h2>Bitácora</h2>
+  <p>Las fases del proyecto. Cambia el atributo data-estado de cada fase a "lista", "curso" o "pendiente".</p>
+  <ol class="linea">
+    <li data-estado="pendiente"><b>Requisitos</b><small>Pendiente</small></li>
+    <li data-estado="pendiente"><b>Diseño</b><small>Pendiente</small></li>
+    <li data-estado="pendiente"><b>Pruebas</b><small>Pendiente</small></li>
+    <li data-estado="pendiente"><b>Integración</b><small>Pendiente</small></li>
+    <li data-estado="pendiente"><b>Lanzamiento</b><small>23 al 27 de noviembre de 2026</small></li>
+  </ol>
+</section>
+
+<section class="sobre" id="equipo"><div class="in">
+  <h2>La tripulación</h2>
+  <div class="equipo">
+    <div class="pers"><div class="ini">KV</div><h3>Kate Suri Villegas Sapiens</h3></div>
+    <div class="pers"><div class="ini">AS</div><h3>Alondra Vanessa Sánchez Ayala</h3></div>
+    <div class="pers"><div class="ini">CI</div><h3>Cutberto Ibarra Figueroa</h3></div>
+    <div class="pers"><div class="ini">DZ</div><h3>David Benito Zazueta Felix</h3></div>
+  </div>
+</div></section>
+</main>
+
+<footer>
+  <img src="logo.png" alt="Logo de Regulus">
+  <p>Equipos Regulus S.A. de C.V.</p>
+  <p>Tec de Monterrey · F1025B · 2026</p>
+  <p><a href="#inicio">Volver arriba</a></p>
+</footer>
+
+<div id="volbox"><input id="vol" type="range" min="0" max="100" value="40" aria-label="Volumen de la música"></div>
+<button id="musica" aria-pressed="false">♪ Activar música</button>
+
+<script>
+// ====== FECHA DEL LANZAMIENTO: edítala aquí (hora de Culiacán, UTC-7) ======
+const LANZAMIENTO = new Date('2026-11-23T00:00:00-07:00');
+const INICIO_CUENTA = new Date('2026-11-08T00:00:00-07:00'); // desde cuándo se llena el anillo
+// ===========================================================================
+
+// Cuenta regresiva y anillo
+const $=id=>document.getElementById(id),p2=n=>String(n).padStart(2,'0'),CIRC=276.46;
+function tick(){
+  const ms=Math.max(0,LANZAMIENTO-new Date()),t=Math.floor(ms/1000);
+  $('d').textContent=Math.floor(t/86400);$('h').textContent=p2(Math.floor(t%86400/3600));
+  $('m').textContent=p2(Math.floor(t%3600/60));$('s').textContent=p2(t%60);
+  const f=Math.min(1,Math.max(0,(new Date()-INICIO_CUENTA)/(LANZAMIENTO-INICIO_CUENTA)));
+  $('arco').style.strokeDashoffset=CIRC*(1-f);$('pct').textContent=Math.round(f*100)+'%';
+}
+tick();setInterval(tick,1000);
+
+// Estrellas con parallax suave
+const cv=$('stars'),cx=cv.getContext('2d');let S=[],W,H,sy=0;
+function ajusta(){W=cv.width=innerWidth;H=cv.height=innerHeight;S=Array.from({length:Math.round(W*H/5500)},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.4+.2,z:Math.random()*.6+.1,c:['#EEF2F6','#EEF2F6','#DAA520','#7E94A3'][Math.floor(Math.random()*4)],o:Math.random()*6}))}
+addEventListener('resize',ajusta);addEventListener('scroll',()=>sy=scrollY,{passive:true});ajusta();
+(function dibuja(t){cx.clearRect(0,0,W,H);for(const s of S){const y=((s.y-sy*s.z)%H+H)%H;cx.globalAlpha=.45+.55*Math.sin(t/900+s.o)**2;cx.fillStyle=s.c;cx.beginPath();cx.arc(s.x,y,s.r,0,6.3);cx.fill()}requestAnimationFrame(dibuja)})(0);
+
+// Música espacial con Web Audio (sin archivos). Si existe audio/musica.mp3, se usa ese archivo.
+const btn=$('musica'),vol=$('vol'),vb=$('volbox');let ctx,master,timer,mp3=null,sonando=false;
+function crea(){
+  ctx=new (window.AudioContext||window.webkitAudioContext)();
+  master=ctx.createGain();master.gain.value=0;master.connect(ctx.destination);
+  const rev=ctx.createConvolver(),len=ctx.sampleRate*5,ir=ctx.createBuffer(2,len,ctx.sampleRate);
+  for(let c=0;c<2;c++){const d=ir.getChannelData(c);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,2.6)}
+  rev.buffer=ir;const wet=ctx.createGain();wet.gain.value=.55;rev.connect(wet);wet.connect(master);
+  const dry=ctx.createGain();dry.gain.value=.6;dry.connect(master);
+  const bus=ctx.createGain();bus.connect(rev);bus.connect(dry);
+  const hz=n=>440*Math.pow(2,(n-69)/12);
+  const prog=[[45,57,60,64],[41,53,57,60],[48,55,60,64],[43,55,59,62]]; // Am F C G
+  let paso=0;
+  function nota(f,t,dur,tipo,g,fc){const o=ctx.createOscillator(),o2=ctx.createOscillator(),a=ctx.createGain(),l=ctx.createBiquadFilter();
+    o.type=o2.type=tipo;o.frequency.value=f;o2.frequency.value=f;o2.detune.value=9;o.detune.value=-9;l.type='lowpass';l.frequency.value=fc;
+    a.gain.setValueAtTime(0,t);a.gain.linearRampToValueAtTime(g,t+dur*.4);a.gain.linearRampToValueAtTime(0,t+dur);
+    o.connect(l);o2.connect(l);l.connect(a);a.connect(bus);o.start(t);o2.start(t);o.stop(t+dur+.1);o2.stop(t+dur+.1)}
+  function compas(){const t=ctx.currentTime+.05,ac=prog[paso%4];const fuerza=Math.min(1,.55+paso*.05);
+    nota(hz(ac[0]-12),t,8,'sawtooth',.16*fuerza,260);              // sub-bajo profundo
+    ac.forEach(n=>nota(hz(n),t,8.5,'sawtooth',.05*fuerza,900+paso%4*250)); // pad orquestal
+    for(let i=0;i<16;i++){const n=ac[i%4===3?1:i%3]+12*(1+(i%2));nota(hz(n),t+i*.5,1.6,'triangle',.05,3000)} // arpegio etéreo
+    for(let i=0;i<4;i++){const k=ctx.createOscillator(),g=ctx.createGain(),tt=t+i*2;k.frequency.setValueAtTime(90,tt);k.frequency.exponentialRampToValueAtTime(34,tt+.5);
+      g.gain.setValueAtTime(.4*fuerza,tt);g.gain.exponentialRampToValueAtTime(.001,tt+.7);k.connect(g);g.connect(bus);k.start(tt);k.stop(tt+.8)} // pulso grave
+    paso++}
+  compas();timer=setInterval(compas,8000);
+}
+function setVol(){const v=vol.value/100;if(mp3)mp3.volume=v;if(master)master.gain.setTargetAtTime(v*.9,ctx.currentTime,.4)}
+async function activa(){
+  if(!mp3&&!ctx){try{const r=await fetch('audio/musica.mp3',{method:'HEAD'});if(r.ok){mp3=new Audio('audio/musica.mp3');mp3.loop=true}}catch(e){}}
+  if(mp3){mp3.volume=0;await mp3.play();let v=0;const fi=setInterval(()=>{v+=.02;mp3.volume=Math.min(v,vol.value/100);if(v>=vol.value/100)clearInterval(fi)},80)}
+  else{if(!ctx)crea();await ctx.resume();setVol()}
+  sonando=true;btn.textContent='♪ Silenciar';btn.setAttribute('aria-pressed','true');vb.classList.add('on')}
+function silencia(){if(mp3)mp3.pause();else if(ctx)master.gain.setTargetAtTime(0,ctx.currentTime,.2);
+  sonando=false;btn.textContent='♪ Activar música';btn.setAttribute('aria-pressed','false');vb.classList.remove('on')}
+btn.onclick=()=>sonando?silencia():activa();vol.oninput=setVol;
+</script>
+</body>
+</html>
