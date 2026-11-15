@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Regulus Lab · Reto F1025B</title>
+<meta name="description" content="Regulus Lab: cuenta regresiva y resultados de los lanzamientos del cohete en el reto F1025B.">
+<meta name="theme-color" content="#0B1C33">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;700&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --noche:#0B1C33; --noche-2:#102643; --dorado:#DAA520; --ciencia:#7E94A3; --hueso:#F2EBDD;
+  --linea:rgba(126,148,163,.3);
+  --display:"Chakra Petch","Trebuchet MS",sans-serif;
+  --cuerpo:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth;scroll-padding-top:4.5rem}
+body{background:var(--noche);color:var(--hueso);font:400 1.0625rem/1.6 var(--cuerpo);-webkit-font-smoothing:antialiased}
+a{color:var(--dorado)}
+:focus-visible{outline:2px solid var(--dorado);outline-offset:3px}
+.wrap{width:min(1080px,100% - 2.5rem);margin-inline:auto}
+h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.08}
+h2{font-size:clamp(1.7rem,4.5vw,2.5rem);margin-bottom:.6rem}
+section{padding:clamp(3.5rem,9vw,6rem) 0}
+.sub{color:var(--ciencia);max-width:58ch}
+
+/* Menú */
+nav{position:fixed;inset:0 0 auto;z-index:20;background:rgba(11,28,51,.82);backdrop-filter:blur(8px);border-bottom:1px solid var(--linea)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:1rem;min-height:3.5rem}
+nav b{font:700 1.15rem var(--display);letter-spacing:.04em}
+nav ul{list-style:none;padding:0;display:flex;gap:clamp(.8rem,3vw,1.8rem);font:500 .95rem var(--display)}
+nav a{color:var(--hueso);text-decoration:none;padding:.3rem 0;border-bottom:2px solid transparent}
+nav a:hover{border-color:var(--dorado)}
+@media (max-width:640px){nav b{display:none}nav .wrap{justify-content:center}}
+
+/* Hero */
+.hero{position:relative;min-height:100svh;display:grid;place-items:center;text-align:center;overflow:hidden;padding:6rem 0 4rem;
+  background:radial-gradient(120% 80% at 80% 10%,#17325a 0%,var(--noche) 60%)}
+.fondo{position:absolute;inset:0;width:100%;height:100%}
+.hero .wrap{position:relative;z-index:2}
+.hero img{width:min(300px,62vw);height:auto;display:block;margin:0 auto 1.4rem;filter:drop-shadow(0 20px 44px rgba(0,0,0,.55))}
+.hero p.eq{font:500 1.15rem var(--display);letter-spacing:.14em;margin:-.2rem 0 1.1rem}
+.hero p.eq i{font-style:normal;color:var(--dorado);margin:0 .5rem}
+.hero p.rt{font:500 1rem var(--display);color:var(--dorado);letter-spacing:.08em;display:flex;align-items:center;justify-content:center;gap:.8rem}
+.hero p.rt::before,.hero p.rt::after{content:"";width:2.6rem;height:1px;background:var(--dorado)}
+h1{font-size:clamp(2.4rem,8.5vw,5rem);margin:.7rem 0 1.8rem;text-shadow:0 4px 30px rgba(11,28,51,.9)}
+h1 .pts i{font-style:normal;color:var(--dorado);animation:pulso 1.5s infinite}
+h1 .pts i:nth-child(2){animation-delay:.2s}h1 .pts i:nth-child(3){animation-delay:.4s}
+@keyframes pulso{0%,100%{opacity:.2}50%{opacity:1}}
+.btn{font:700 1.05rem var(--display);letter-spacing:.06em;color:var(--hueso);background:rgba(11,28,51,.6);border:1.5px solid var(--dorado);
+  padding:.85rem 2.2rem;cursor:pointer;clip-path:polygon(14px 0,100% 0,calc(100% - 14px) 100%,0 100%);transition:background .2s,color .2s}
+.btn:hover{background:var(--dorado);color:var(--noche)}
+.flama{animation:flama .22s infinite alternate;transform-origin:50% 0}
+@keyframes flama{from{transform:scaleY(.9)}to{transform:scaleY(1.08)}}
+
+/* Cuenta regresiva */
+.cuenta{border-block:1px solid var(--linea);background:linear-gradient(180deg,var(--noche-2),var(--noche));text-align:center}
+.anillos{display:flex;justify-content:center;flex-wrap:wrap;gap:clamp(.8rem,3vw,2rem);margin:2rem 0 1.4rem}
+.anillo{position:relative;width:clamp(5.4rem,21vw,8.4rem);aspect-ratio:1}
+.anillo svg{width:100%;height:100%;transform:rotate(-90deg)}
+.anillo circle{fill:none;stroke-width:5}
+.anillo .pista{stroke:var(--linea)}
+.anillo .prog{stroke:var(--dorado);stroke-linecap:round;stroke-dasharray:276.46;stroke-dashoffset:276.46;transition:stroke-dashoffset .4s linear}
+.anillo div{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.anillo b{font:700 clamp(1.6rem,6.5vw,2.6rem)/1 var(--display);font-variant-numeric:tabular-nums}
+.anillo span{font-size:.85rem;color:var(--ciencia)}
+.ventana{font:500 1.05rem var(--display);color:var(--dorado)}
+
+/* Tarjetas con esquinas HUD */
+.hud{position:relative;background:var(--noche-2);border:1px solid var(--linea);padding:1.4rem 1.5rem}
+.hud::before,.hud::after{content:"";position:absolute;width:14px;height:14px;border:2px solid var(--dorado)}
+.hud::before{top:-1px;left:-1px;border-right:0;border-bottom:0}
+.hud::after{right:-1px;bottom:-1px;border-left:0;border-top:0}
+
+/* Reto */
+.reto p{max-width:62ch;margin-top:1rem}
+.reto .hud{margin-top:1.6rem;max-width:62ch}
+.fila{display:flex;align-items:center;gap:1.4rem}
+.fila img{width:clamp(88px,22vw,130px);height:auto;flex:none}
+.fila p{margin:0}
+@media (max-width:480px){.fila{flex-direction:column;text-align:center}}
+
+/* Cohete */
+.cohete .grid{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.4fr);gap:clamp(1.5rem,5vw,4rem);align-items:center}
+.cohete svg.arte{width:min(190px,56%);height:auto;display:block;margin-inline:auto}
+.datos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin-top:1.6rem}
+.datos .hud{padding:1rem 1.2rem}
+.datos dt{font-size:.9rem;color:var(--ciencia)}
+.datos dd{font:700 1.2rem var(--display);margin:.15rem 0 0}
+.datos dd.pc{color:var(--dorado)}
+@media (max-width:720px){.cohete .grid{grid-template-columns:1fr}}
+
+/* Equipo */
+.equipo ul{list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1rem;margin-top:1.6rem}
+.equipo li{font:500 1.2rem/1.25 var(--display)}
+
+/* Resultados */
+.tabla{overflow-x:auto;margin-top:1.6rem}
+table{border-collapse:collapse;width:100%;min-width:880px;font-size:.96rem}
+th,td{padding:.8rem 1rem;text-align:left;white-space:nowrap}
+th{font:500 .95rem var(--display);color:var(--dorado);border-bottom:2px solid var(--dorado)}
+td{border-bottom:1px solid var(--linea);font-variant-numeric:tabular-nums}
+tr:last-child td{border-bottom:0}
+td.obs{white-space:normal;min-width:14rem}
+td.vacio{text-align:center;color:var(--ciencia);padding:2.2rem 1rem;white-space:normal}
+.ok,.fallo{display:inline-block;padding:.1rem .65rem;border-radius:99px;font-weight:500;font-size:.88rem}
+.ok{background:rgba(218,165,32,.2);color:var(--dorado)}
+.fallo{background:rgba(126,148,163,.22)}
+
+footer{padding:2rem 0 3rem;border-top:1px solid var(--linea);color:var(--ciencia);font-size:.92rem;text-align:center}
+
+/* Ventana emergente */
+dialog{margin:auto;max-width:min(420px,92vw);width:100%;color:var(--hueso);background:var(--noche-2);border:1px solid var(--dorado);padding:2rem 1.6rem;text-align:center}
+dialog::backdrop{background:rgba(5,12,24,.78);backdrop-filter:blur(4px)}
+dialog h2{font-size:1.7rem}
+dialog p{color:var(--ciencia);margin:.6rem 0 1.4rem}
+dialog .btn{padding:.6rem 1.6rem;font-size:.95rem}
+
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}h1 .pts i,.flama{animation:none;opacity:1}.anillo .prog{transition:none}}
+</style>
+</head>
+<body>
+
+<!-- Cohete reutilizable -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="cohete" viewBox="0 0 120 260">
+    <g class="flama"><path d="M48 172c0 30 6 58 12 80 6-22 12-50 12-80z" fill="#F2EBDD" opacity=".85"/><path d="M54 172c0 20 3 38 6 52 3-14 6-32 6-52z" fill="#DAA520"/></g>
+    <path d="M60 8c20 20 28 54 28 96v50H32v-50c0-42 8-76 28-96z" fill="#C9D2DA"/>
+    <path d="M60 8c-20 20-28 54-28 96v50h28z" fill="#9FAEBB"/>
+    <circle cx="60" cy="88" r="15" fill="#0B1C33" stroke="#DAA520" stroke-width="4"/>
+    <path d="M32 120l-22 36v26l22-12zM88 120l22 36v26l-22-12z" fill="#DAA520"/>
+    <path d="M44 154h32l-6 14H50z" fill="#0B1C33"/>
+  </symbol>
+</svg>
+
+<nav>
+  <div class="wrap">
+    <b>REGULUS LAB</b>
+    <ul>
+      <li><a href="#inicio">Inicio</a></li>
+      <li><a href="#reto">El reto</a></li>
+      <li><a href="#cohete">Cohete</a></li>
+      <li><a href="#equipo">Equipo</a></li>
+      <li><a href="#resultados">Resultados</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero" id="inicio">
+  <!-- Fondo inspirado en el logo: cielo, planeta, órbita dorada, montañas y cohete en despegue -->
+  <svg class="fondo" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs>
+      <radialGradient id="pl" cx="35%" cy="30%"><stop offset="0" stop-color="#7E94A3"/><stop offset=".6" stop-color="#2a4468"/><stop offset="1" stop-color="#0f2342"/></radialGradient>
+      <linearGradient id="mt" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a4468"/><stop offset="1" stop-color="#0B1C33"/></linearGradient>
+    </defs>
+    <g fill="#F2EBDD">
+      <circle cx="120" cy="110" r="1.6"/><circle cx="260" cy="60" r="1.2"/><circle cx="430" cy="140" r="1.8" fill="#DAA520"/>
+      <circle cx="560" cy="70" r="1.2"/><circle cx="700" cy="170" r="1.5"/><circle cx="820" cy="60" r="1.2"/>
+      <circle cx="980" cy="120" r="1.8" fill="#DAA520"/><circle cx="1100" cy="210" r="1.2"/><circle cx="60" cy="300" r="1.4"/>
+      <circle cx="330" cy="260" r="1.2"/><circle cx="1150" cy="380" r="1.4"/><circle cx="210" cy="430" r="1.2"/>
+    </g>
+    <path d="M520 54l7 17 17 7-17 7-7 17-7-17-17-7 17-7z" fill="#DAA520"/>
+    <path d="M900 250l5 12 12 5-12 5-5 12-5-12-12-5 12-5z" fill="#F2EBDD" opacity=".8"/>
+    <path d="M150 360l4 10 10 4-10 4-4 10-4-10-10-4 10-4z" fill="#F2EBDD" opacity=".6"/>
+    <circle cx="1010" cy="250" r="118" fill="url(#pl)"/>
+    <path d="M845 330C920 190 1130 150 1230 215" fill="none" stroke="#DAA520" stroke-width="3" stroke-linecap="round" opacity=".85"/>
+    <path d="M-30 640C60 450 330 300 560 300" fill="none" stroke="#DAA520" stroke-width="2.5" stroke-linecap="round" opacity=".5"/>
+    <path d="M0 800V650l140-110 120 90 150-130 170 150 130-80 150 120 160-140 180 130v120z" fill="url(#mt)" opacity=".9"/>
+    <path d="M0 800V720l180-70 160 60 200-80 180 80 180-60 300 70v80z" fill="#0B1C33"/>
+    <use href="#cohete" x="120" y="330" width="110" height="238" opacity=".9"/>
+  </svg>
+
+  <div class="wrap">
+    <img src="assets/logo.png" alt="Logotipo de Regulus: un cuyo astronauta con lentes junto a un cohete en despegue" width="300" height="300">
+    <p class="eq">EQUIPO 4<i>·</i>GRUPO 503</p>
+    <p class="rt">RETO F1025B</p>
+    <h1 id="leyenda">Lanzamiento por venir<span class="pts" aria-hidden="true"><i>.</i><i>.</i><i>.</i></span></h1>
+    <button class="btn" id="iniciar" type="button">Iniciar misión</button>
+  </div>
+</header>
+
+<section class="cuenta" id="cuenta" aria-labelledby="t-cuenta">
+  <div class="wrap">
+    <h2 id="t-cuenta">Cuenta regresiva</h2>
+    <div class="anillos" role="timer" aria-label="Cuenta regresiva al lanzamiento">
+      <div class="anillo"><svg viewBox="0 0 100 100"><circle class="pista" cx="50" cy="50" r="44"/><circle class="prog" cx="50" cy="50" r="44" data-max="30"/></svg><div><b id="d">--</b><span>días</span></div></div>
+      <div class="anillo"><svg viewBox="0 0 100 100"><circle class="pista" cx="50" cy="50" r="44"/><circle class="prog" cx="50" cy="50" r="44" data-max="24"/></svg><div><b id="h">--</b><span>horas</span></div></div>
+      <div class="anillo"><svg viewBox="0 0 100 100"><circle class="pista" cx="50" cy="50" r="44"/><circle class="prog" cx="50" cy="50" r="44" data-max="60"/></svg><div><b id="m">--</b><span>minutos</span></div></div>
+      <div class="anillo"><svg viewBox="0 0 100 100"><circle class="pista" cx="50" cy="50" r="44"/><circle class="prog" cx="50" cy="50" r="44" data-max="60"/></svg><div><b id="s">--</b><span>segundos</span></div></div>
+    </div>
+    <p class="ventana" id="ventana">Lanzamiento: miércoles 2 de diciembre de 2026, 7:00 a. m.</p>
+  </div>
+</section>
+
+<main>
+  <section class="wrap reto" id="reto" aria-labelledby="t-reto">
+    <h2 id="t-reto">El reto</h2>
+    <p class="sub">El reto F1025B consiste en lograr lanzamientos exitosos del cohete que cada equipo diseña y construye como su propia empresa.</p>
+    <div class="hud fila"><img src="assets/rocket-tec.png" alt="Logotipo de Rocket Tec Sinaloa 2026" width="130" height="132"><p>Regulus Lab registra aquí cada intento: qué tan alto llegó, cuánto voló y si el lanzamiento fue un éxito.</p></div>
+  </section>
+
+  <section class="wrap cohete" id="cohete" aria-labelledby="t-cohete">
+    <div class="grid">
+      <svg class="arte" viewBox="0 0 120 260" role="img" aria-label="Ilustración del cohete de Regulus"><use href="#cohete"/></svg>
+      <div>
+        <h2 id="t-cohete">El cohete</h2>
+        <p class="sub">Estos datos se publican cuando estén medidos.</p>
+        <dl class="datos">
+          <div class="hud"><dt>Largo</dt><dd class="pc">Por confirmar</dd></div>
+          <div class="hud"><dt>Diámetro</dt><dd class="pc">Por confirmar</dd></div>
+          <div class="hud"><dt>Masa</dt><dd class="pc">Por confirmar</dd></div>
+          <div class="hud"><dt>Motor</dt><dd class="pc">Por confirmar</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap equipo" id="equipo" aria-labelledby="t-equipo">
+    <h2 id="t-equipo">El equipo</h2>
+    <p class="sub">Cuatro integrantes de Regulus Lab.</p>
+    <ul>
+      <li class="hud">Kate Suri Villegas Sapiens</li>
+      <li class="hud">Alondra Vanessa Sánchez Ayala</li>
+      <li class="hud">Cutberto Ibarra Figueroa</li>
+      <li class="hud">David Benito Zazueta Felix</li>
+    </ul>
+  </section>
+
+  <section class="wrap" id="resultados" aria-labelledby="t-res">
+    <h2 id="t-res">Resultados del reto F1025B</h2>
+    <p class="sub">Un renglón por cada lanzamiento. Se llena después de cada intento.</p>
+    <div class="tabla hud" tabindex="0" role="region" aria-label="Tabla de resultados, se desplaza horizontalmente">
+      <table>
+        <thead><tr>
+          <th scope="col">Intento</th><th scope="col">Fecha</th><th scope="col">Altura (m)</th>
+          <th scope="col">Tiempo de vuelo (s)</th><th scope="col">Distancia (m)</th><th scope="col">Velocidad (m/s)</th>
+          <th scope="col">Puntaje</th><th scope="col">Resultado</th><th scope="col">Observaciones</th>
+        </tr></thead>
+        <tbody id="filas"></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap">Equipos Regulus S.A. de C.V. · Reto F1025B</div></footer>
+
+<dialog id="pop" aria-labelledby="t-pop">
+  <h2 id="t-pop">Lanzamiento por venir...</h2>
+  <p>La misión está en preparación. Revisa la cuenta regresiva para saber cuándo despegamos.</p>
+  <button class="btn" id="cerrar" type="button">Entendido</button>
+</dialog>
+
+<script>
+/* ===== Para actualizar la página, edita solo estas dos partes ===== */
+
+// 1) Fecha y hora del lanzamiento (hora de Sinaloa, UTC-7). Si la cambias, actualiza también el texto id="ventana" en el HTML. Formato: "AAAA-MM-DDTHH:MM:SS-07:00"
+//    Con null el reloj queda en espera.
+const FECHA_LANZAMIENTO = "2026-12-02T07:00:00-07:00";
+
+// 2) Un objeto por lanzamiento. Ejemplo (cámbialo cuando haya datos reales):
+//    { intento:1, fecha:"2026-11-23", altura:12.4, tiempo:3.1, distancia:8.0, velocidad:4.0,
+//      puntaje:85, resultado:"exito", observaciones:"Despegue limpio" }
+//    resultado puede ser "exito" o "fallo".
+const LANZAMIENTOS = [];
+
+/* ================================================================== */
+(function(){
+  const $ = id => document.getElementById(id);
+
+  // Ventana emergente
+  const pop = $("pop");
+  $("iniciar").addEventListener("click", () => pop.showModal());
+  $("cerrar").addEventListener("click", () => pop.close());
+  pop.addEventListener("click", e => { if(e.target === pop) pop.close(); });
+
+  // Tabla de resultados
+  const cuerpo = $("filas");
+  if(!LANZAMIENTOS.length){
+    const tr = document.createElement("tr"), td = document.createElement("td");
+    td.colSpan = 9; td.className = "vacio";
+    td.textContent = "Todavía no hay lanzamientos registrados. Cada intento del reto F1025B aparecerá aquí.";
+    tr.appendChild(td); cuerpo.appendChild(tr);
+  } else {
+    LANZAMIENTOS.forEach(l => {
+      const tr = document.createElement("tr");
+      [l.intento,l.fecha,l.altura,l.tiempo,l.distancia,l.velocidad,l.puntaje].forEach(v => {
+        const td = document.createElement("td"); td.textContent = v ?? "–"; tr.appendChild(td);
+      });
+      const tdR = document.createElement("td"), b = document.createElement("span");
+      const ok = l.resultado === "exito";
+      b.className = ok ? "ok" : "fallo"; b.textContent = ok ? "Éxito" : "Fallo";
+      tdR.appendChild(b); tr.appendChild(tdR);
+      const tdO = document.createElement("td"); tdO.className = "obs";
+      tdO.textContent = l.observaciones || "–"; tr.appendChild(tdO);
+      cuerpo.appendChild(tr);
+    });
+  }
+
+  // Reloj de anillos
+  if(!FECHA_LANZAMIENTO) return;
+  const meta = new Date(FECHA_LANZAMIENTO).getTime();
+  if(isNaN(meta)) return;
+  const C = 276.46, pad = n => String(n).padStart(2,"0");
+  const ids = ["d","h","m","s"], aros = document.querySelectorAll(".prog");
+  function poner(i, valor){
+    $(ids[i]).textContent = pad(valor);
+    const max = +aros[i].dataset.max;
+    aros[i].style.strokeDashoffset = C * (1 - Math.min(valor, max) / max);
+  }
+  function tick(){
+    const r = Math.max(0, meta - Date.now());
+    poner(0, Math.floor(r/864e5));
+    poner(1, Math.floor(r%864e5/36e5));
+    poner(2, Math.floor(r%36e5/6e4));
+    poner(3, Math.floor(r%6e4/1e3));
+    if(r === 0){
+      $("leyenda").textContent = "¡Despegue!";
+      $("ventana").textContent = "Los resultados aparecerán en la tabla.";
+      clearInterval(t);
+    }
+  }
+  const t = setInterval(tick, 1000); tick();
+})();
+</script>
+</body>
+</html>
